@@ -46,7 +46,7 @@ static bool move_king(char board[64]) {
       board[king_loc] = empty;
     }
     if (can_capture_king(board)) {
-      //print_board(board);
+      //print_board(board); TODO!!
       if (king_loc + move >= 0) {
         if (captured_queen) board[king_loc+move] = q;
         else board[king_loc+move] = empty;
@@ -58,7 +58,7 @@ static bool move_king(char board[64]) {
   } return true;
 }
 
-// see checkmate.h
+// TODO: see checkmate.h
 bool is_checkmate(char board[64]) {
   if (can_capture_king(board)) {
     for (int i = 0; i < 8; i ++) {

@@ -6,13 +6,6 @@ import java.util.List;
 import java.util.regex.*;
 import org.apache.commons.io.FilenameUtils;
 
-/*
- Handles Java
- Handles Python
- C? C++?
- Javascript?
-*/
-
 public class Solution {
 	  static String JAVA_PATTERN = "//.*|/\\*((.|\\n)(?!=*/))+\\*/";
 	  static String PYTHON_PATTERN = "(#.*\\n)+";
