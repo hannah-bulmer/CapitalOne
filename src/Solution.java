@@ -14,10 +14,10 @@ import org.apache.commons.io.FilenameUtils;
 */
 
 public class Solution {
-	static String JAVA_PATTERN = "//.*|/\\*((.|\\n)(?!=*/))+\\*/";
+	  static String JAVA_PATTERN = "//.*|/\\*((.|\\n)(?!=*/))+\\*/";
 	  static String PYTHON_PATTERN = "(#.*\\n)+";
-
-	  // public Solution() {}
+	  static String PY = "py";
+	  static String NEWLINE = "\n";
 
 	  public static void main(String[] args) throws FileNotFoundException { 
 	    Scanner scanner = new Scanner(System.in);
@@ -26,31 +26,41 @@ public class Solution {
 
 	    File file = new File(fileName);
 	    String ext = FilenameUtils.getExtension(file.getAbsolutePath());
-	    Scanner sc = new Scanner(file);
-	    boolean python = ext == "py";
-	    String patternType = (python ? PYTHON_PATTERN : JAVA_PATTERN);
-	  
-	    sc.useDelimiter("\\Z"); 
+	    boolean python = ext == PY;
+	     
 
-	    String s = sc.next();
-	    List <String> comments = new ArrayList<>();
-	    Pattern pattern = Pattern.compile(patternType);
-	    Matcher matcher = pattern.matcher(s);
-	    while (matcher.find()) {
-	      String match = matcher.group();
-	      comments.add(match);
-	    }
+	    String s = retrieveFile(file);
+	    List <String> comments = retrieveComments(s, python);
 
 	    countLines(s);
 	    int numComments = countCommentLines(comments, python);
 	    getCommentTypes(comments, python, numComments);
 	    countBlocks(comments, python);
 	    countToDos(comments);
+	  }
+	  
+	  static String retrieveFile(File file) throws FileNotFoundException {
+		Scanner sc = new Scanner(file);
+	    sc.useDelimiter("\\Z");
+	    String s = sc.next();
 	    sc.close();
+	    return s;
+	  }
+	  
+	  static List <String> retrieveComments(String s, boolean python) {
+		String patternType = (python ? PYTHON_PATTERN : JAVA_PATTERN);
+	  	List <String> comments = new ArrayList<>();
+	    Pattern pattern = Pattern.compile(patternType);
+	    Matcher matcher = pattern.matcher(s);
+	    while (matcher.find()) {
+	      String match = matcher.group();
+	      comments.add(match);
+	    }
+	    return comments;
 	  }
 
 	  static int countLines(String file) {
-	    int length = file.length() - file.replace("\n", "").length() + 1;
+	    int length = file.length() - file.replace(NEWLINE, "").length() + 1;
 	    System.out.format("Total # of lines: %d\n", length);
 	    return length;
 	  }
@@ -58,7 +68,7 @@ public class Solution {
 	  static int countCommentLines(List <String> comments, boolean isPython) {
 	    int count = 0;
 	    for (String c: comments) {
-	      int numLines = c.length() - c.replace("\n", "").length() + 1;
+	      int numLines = c.length() - c.replace(NEWLINE, "").length() + 1;
 	      if (isPython) numLines --; // accounts for saving the extra line in python
 	      count += numLines;
 	    }
@@ -77,6 +87,10 @@ public class Solution {
 	        somecode() # comment
 	        # comment
 	   * counts as a block comment
+	   * 
+	   * For java, assumes block comments are done with /**/ /*
+	   * format, and that multiple single line comments are treated
+	   * as multiple single line comments
 	   */
 	  static int countSingleComments(List <String> comments, boolean isPython) {
 	    int count = 0;
@@ -104,7 +118,7 @@ public class Solution {
 	    } else {
 	      // get the single line comments
 	      for (String c: comments) {
-	        int numLines = c.length() - c.replace("\n", "").length();
+	        int numLines = c.length() - c.replace(NEWLINE, "").length();
 	        if (numLines > 1) count ++;
 	      }
 	    }
@@ -113,8 +127,6 @@ public class Solution {
 	  }
 
 	  // Makes the assumption only one TODO appears in each comment
-	  // because I thought about this a lot and realistically it makes most sense to do
-	  // this way
 	  static int countToDos(List <String> comments) {
 	    int count = 0;
 	    for (String c: comments) {
