@@ -1,13 +1,13 @@
 # Coding Challenge for Capital One (1.0.0)
 
 ### Summary of Challenge
-Create a program that takes a file as input and returns some statements about the program's comments;  how many, what types, how many `TODOs`, etc. I created my solution in Java. The main code can be found in [Solution.java](https://github.com/hannah-bulmer/CapitalOne/blob/master/src/Solution.java). The test suite can be found in [SolutionTest.java](https://github.com/hannah-bulmer/CapitalOne/blob/master/src/SolutionTest.java).
+Create a program that takes a file as input and returns several statements about the program's comments: how many, what types, how many `TODOs`, etc. I created my solution in Java. The main code can be found in [Solution.java](https://github.com/hannah-bulmer/CapitalOne/blob/master/src/Solution.java). The test suite can be found in [SolutionTest.java](https://github.com/hannah-bulmer/CapitalOne/blob/master/src/SolutionTest.java).
 
 After creating a JAR file, this program can be run in any folder by typing
 ```bash
 java -jar path/to/jar.jar
 ```
-It will then wait for input. Please enter a relative or absolute path to the file you want to analyse.
+It will then wait for input. **Please enter a relative or absolute path to the file you want to analyse.**
 
 Statistics such as the following will then be printed to the console:
 ```
