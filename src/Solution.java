@@ -14,6 +14,7 @@ public class Solution {
 
 	  public static void main(String[] args) throws FileNotFoundException { 
 	    Scanner scanner = new Scanner(System.in);
+	    System.out.print("Please provide a relative file path: ");
 	    String fileName = scanner.next();
 	    scanner.close();
 
