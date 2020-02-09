@@ -25,17 +25,17 @@ Total # of TODO’s: 0
 ```Java
 // TODO: Write up all the TODOs we have to complete this week
 ```
-2. Multiline comments in Java/C++/Javascript-type syntax should be made using `/* */`. Comments that appear in the form
-```Java
-// hello
-// I am a comment
-```
-or
+2. Multiline comments that appear next to code count as single line comments. For example
 ```Java
 code() // comment about code
 moreCode() // comment about more code
 ```
-count as multiple single line comments
+or
+```python
+hello() # comment
+# other comment
+```
+Will each count as 2 comments, not one block comment
 
 ### Known specifications and limitations
 This program does not handle comments in languages such as Scheme, that use `;;` for their comment schemes.
