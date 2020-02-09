@@ -23,8 +23,8 @@ public class SolutionTest {
 				"* any manner without prior written authorization from Capital One.\n" + 
 				"*\n" + 
 				"*\n" + 
-				"*/");
-		assertEquals(comments.get(2), "// @SpringBootApplication is a convenience annotation that adds all of the above.");
+				"*/\n");
+		assertEquals(comments.get(2), "// @SpringBootApplication is a convenience annotation that adds all of the above.\n");
 		
 		f = new File("./src/TestFiles/test2.py");
 		file = s.retrieveFile(f);
@@ -91,7 +91,7 @@ public class SolutionTest {
 		f = new File("./src/TestFiles/test3.c");
 		file = s.retrieveFile(f);
 		comments = s.retrieveComments(file, false);
-		assertEquals(s.countSingleComments(comments, false), 12);
+		assertEquals(s.countSingleComments(comments, false), 8);
 	}
 	
 	@Test

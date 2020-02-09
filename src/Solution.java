@@ -7,7 +7,7 @@ import java.util.regex.*;
 import org.apache.commons.io.FilenameUtils;
 
 public class Solution {
-	  static String JAVA_PATTERN = "//.*|/\\*((.|\\n)(?!=*/))+\\*/";
+	  static String JAVA_PATTERN = "(//.*\n)+|/\\*((.|\\n)(?!=*/))+\\*/\n";
 	  static String PYTHON_PATTERN = "(#.*\\n)+";
 	  static String PY = "py";
 	  static String NEWLINE = "\n";
@@ -20,7 +20,7 @@ public class Solution {
 
 	    File file = new File(fileName);
 	    String ext = FilenameUtils.getExtension(file.getAbsolutePath());
-	    boolean python = ext == PY;
+	    boolean python = (ext.contentEquals(PY));
 	     
 
 	    String s = retrieveFile(file);
@@ -33,6 +33,12 @@ public class Solution {
 	    countToDos(comments);
 	  }
 	  
+	  /**
+	   * Retrieves a file and parses it into a string
+	   * @param file
+	   * @return String
+	   * @throws FileNotFoundException
+	   */
 	  static String retrieveFile(File file) throws FileNotFoundException {
 		Scanner sc = new Scanner(file);
 	    sc.useDelimiter("\\Z");
@@ -41,6 +47,12 @@ public class Solution {
 	    return s;
 	  }
 	  
+	  /**
+	   * Retrieves all comments from file and turns them into an array list
+	   * @param s - file string
+	   * @param python - if the file was python or not
+	   * @return list of comments
+	   */
 	  static List <String> retrieveComments(String s, boolean python) {
 		String patternType = (python ? PYTHON_PATTERN : JAVA_PATTERN);
 	  	List <String> comments = new ArrayList<>();
@@ -53,17 +65,28 @@ public class Solution {
 	    return comments;
 	  }
 
+	  /**
+	   * 
+	   * @param file
+	   * @return Num lines in the file
+	   */
 	  static int countLines(String file) {
 	    int length = file.length() - file.replace(NEWLINE, "").length() + 1;
 	    System.out.format("Total # of lines: %d\n", length);
 	    return length;
 	  }
 
+	  /**
+	   * 
+	   * @param comments
+	   * @param isPython
+	   * @return Num comment lines in the file
+	   */
 	  static int countCommentLines(List <String> comments, boolean isPython) {
 	    int count = 0;
 	    for (String c: comments) {
-	      int numLines = c.length() - c.replace(NEWLINE, "").length() + 1;
-	      if (isPython) numLines --; // accounts for saving the extra line in python
+	      int numLines = c.length() - c.replace(NEWLINE, "").length();
+	     // if (!isPython && numLines > 1) numLines ++; // account
 	      count += numLines;
 	    }
 	    System.out.format("Total # of comment lines: %d\n", count);
@@ -77,20 +100,17 @@ public class Solution {
 	  }
 
 	  /**
-	   * For python, assumes comments of the form
-	        somecode() # comment
-	        # comment
-	   * counts as a block comment
-	   * 
-	   * For java, assumes block comments are done with /**/ /*
-	   * format, and that multiple single line comments are treated
-	   * as multiple single line comments
+	   * Counts single comments - check README for details
+	   * @param comments
+	   * @param isPython
+	   * @return num of single comments
 	   */
 	  static int countSingleComments(List <String> comments, boolean isPython) {
 	    int count = 0;
 	    if (!isPython) {
 	      for (String c: comments) {
-	        if (c.charAt(0) == '/' && c.charAt(1) == '/') count ++;
+	    	  int numLines = c.length() - c.replace("\n", "").length();
+		      if (numLines == 1) count ++;
 	      }
 	    } else {
 	      // get the single line comments
@@ -103,6 +123,12 @@ public class Solution {
 	    return count;
 	  }
 
+	  /**
+	   * Counts number of comment blocks
+	   * @param comments
+	   * @param isPython
+	   * @return num comment blocks
+	   */
 	  static int countBlocks(List <String> comments, boolean isPython) {
 	    int count = 0;
 	    if (!isPython) {
@@ -120,7 +146,12 @@ public class Solution {
 	    return count;
 	  }
 
-	  // Makes the assumption only one TODO appears in each comment
+	  /**
+	   * Counts number of TODOS
+	   * Makes the assumption only one TODO appears in each comment
+	   * @param comments
+	   * @return num TODO
+	   */
 	  static int countToDos(List <String> comments) {
 	    int count = 0;
 	    for (String c: comments) {
