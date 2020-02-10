@@ -45,3 +45,5 @@ This program counts lines such as
 System.out.println("// A comment");
 ```
 as comments at the given time.
+
+After submitting this challenge, I learned by chance that Python also recently started to support `''' '''` as syntax for multiline comments. This is not implemented in my solution at this time.
